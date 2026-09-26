@@ -14,13 +14,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Restore source archive
-        run: |
-          cat custom-folders-source/cfpart*.txt > /tmp/custom-folders.b64
-          base64 -d /tmp/custom-folders.b64 > /tmp/custom-folders.zip
-          unzip -t /tmp/custom-folders.zip
-          mkdir -p /tmp/custom-folders-src
-          unzip -q /tmp/custom-folders.zip -d /tmp/custom-folders-src
       - name: Install Android SDK packages
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
@@ -28,9 +21,9 @@ jobs:
         with:
           gradle-version: '8.9'
       - name: Build APK
-        working-directory: /tmp/custom-folders-src/CustomFolders
+        working-directory: custom-folders-project
         run: gradle assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: MoiPapky-debug-apk
-          path: /tmp/custom-folders-src/CustomFolders/app/build/outputs/apk/debug/app-debug.apk
+          path: custom-folders-project/app/build/outputs/apk/debug/app-debug.apk

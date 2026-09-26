@@ -1,0 +1,8 @@
+package com.customfolders.app;
+import android.app.*;import android.appwidget.*;import android.content.*;import android.os.*;import android.view.*;import android.widget.*;import java.util.*;
+public class WidgetConfigActivity extends Activity{
+ int widgetId=AppWidgetManager.INVALID_APPWIDGET_ID;FolderStore store;
+ @Override public void onCreate(Bundle b){ThemeUtils.apply(this);super.onCreate(b);setResult(RESULT_CANCELED);store=new FolderStore(this);widgetId=getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);long pending=getSharedPreferences("settings",0).getLong("pending_pin",-1);if(pending>0&&store.get(pending)!=null){bind(pending);getSharedPreferences("settings",0).edit().remove("pending_pin").apply();return;}build();}
+ void build(){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);l.setPadding(Ui.dp(this,18),Ui.dp(this,20),Ui.dp(this,18),Ui.dp(this,20));l.setBackgroundColor(ThemeUtils.bg(this));TextView t=Ui.text(this,"Оберіть папку для віджета",22,ThemeUtils.text(this));l.addView(t,Ui.mp(this));for(FolderStore.Folder f:store.all()){Button b=Ui.button(this,f.name,true);LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,Ui.dp(this,50));Ui.margins(p,this,0,10,0,0);l.addView(b,p);b.setOnClickListener(v->bind(f.id));}setContentView(l);}
+ void bind(long id){if(widgetId==AppWidgetManager.INVALID_APPWIDGET_ID){finish();return;}FolderWidgetProvider.bind(this,widgetId,id);Intent r=new Intent();r.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetId);setResult(RESULT_OK,r);finish();}
+}
