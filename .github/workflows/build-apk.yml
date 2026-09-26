@@ -13,7 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Extract source
-        run: unzip -q MoiTerminy-source.zip
+        run: |
+          base64 -d MoiTerminy-source.zip > source.zip
+          unzip -q source.zip
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
