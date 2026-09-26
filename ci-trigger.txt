@@ -1,3 +1,4 @@
 Trigger Android APK build.
 Retry after fixing source archive decoding.
 Retry using preinstalled Android SDK.
+Retry with absolute sdkmanager path.
