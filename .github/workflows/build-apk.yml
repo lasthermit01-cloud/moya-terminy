@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract source
+      - name: Reconstruct and verify source
         run: |
-          base64 -d MoiTerminy-source.zip > source.zip
+          cat source_parts/part*.txt | tr -d '\n\r' | base64 -d > source.zip
+          unzip -t source.zip
           unzip -q source.zip
       - uses: actions/setup-java@v4
         with:
