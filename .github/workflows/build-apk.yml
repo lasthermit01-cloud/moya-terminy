@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ moya-terminy, main ]
+  pull_request:
+    branches: [ moya-terminy, main ]
 
 jobs:
   build:
